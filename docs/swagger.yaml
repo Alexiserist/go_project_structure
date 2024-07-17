@@ -1,0 +1,201 @@
+definitions:
+  auth.AccessTokenResponse:
+    properties:
+      accessToken:
+        example: Token
+        type: string
+      message:
+        example: OK
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  auth.UserLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.CreateUser:
+    properties:
+      email:
+        type: string
+      isActive:
+        type: boolean
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      username:
+        type: string
+    required:
+    - email
+    - username
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact: {}
+  description: Golang Framwork GIN ,Database Postgress, Gorm, Swaggo
+  title: Golang Framework GIN Swagger
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.AccessTokenResponse'
+      summary: Authorization Login
+      tags:
+      - Auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              data:
+                items:
+                  $ref: '#/definitions/models.User'
+                type: array
+              message:
+                type: string
+              status:
+                type: integer
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Create users
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              data:
+                $ref: '#/definitions/models.User'
+              message:
+                type: string
+              status:
+                type: integer
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create users
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Users By Key
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              message:
+                type: string
+              status:
+                type: integer
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete Users By Key
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: Get Users By Key
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              message:
+                type: string
+              status:
+                type: integer
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Users By Key
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
