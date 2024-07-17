@@ -27,11 +27,12 @@ func NewAuthRepository() AuthRepository {
 }
 
 func (r *authRepository) GenerateToken(username string) (string,error){
+	timeEnv := config.GetSecretTimeJwt();
 	claim := &jwt.MapClaims{
 		"Username" : string(username),
-		"ExpiresAt": jwt.NewNumericDate(time.Now().Add(1 * time.Minute)),
+		"ExpiresAt": jwt.NewNumericDate(time.Now().Add(time.Duration(timeEnv) * time.Minute)),
 		"IssuedAt": jwt.NewNumericDate(time.Now()),
-		"NotBefore": jwt.NewNumericDate(time.Now().Add(1 * time.Minute)),
+		"NotBefore": jwt.NewNumericDate(time.Now().Add(time.Duration(timeEnv) * time.Minute)),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim);
 	secret := config.GetSecret();

@@ -1,9 +1,11 @@
 package config
 
 import (
-    "github.com/joho/godotenv"
-    "log"
-    "os"
+	"log"
+	"os"
+	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -35,4 +37,17 @@ func GetSecret() string{
         log.Fatal("Error loading .env file")
     }
     return os.Getenv("SECRET_ACCESSTOKEN")
+}
+
+func GetSecretTimeJwt() int64 {
+    var defaultTokenTime int64 = 30;
+    err := godotenv.Load("config/environment/.env")
+    if err != nil {
+        log.Fatal("Error loading .env file")
+    }
+    time,err := strconv.Atoi(os.Getenv("TOKEN_EXPIRED"));
+    if err != nil{
+        return defaultTokenTime;
+    }
+    return int64(time);
 }

@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log"
+	
 	"go_project_structure/database"
 	"go_project_structure/internal/routes"
-	"log"
 	_ "go_project_structure/docs"
 )
 

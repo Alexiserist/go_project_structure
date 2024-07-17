@@ -1,40 +1,70 @@
-# go_project_structure
+# GO Project Structure
 
-# PACKAGE INSTALLED
-go mod init go_project_structure
-go get github.com/joho/godotenv
-go get -u github.com/gin-gonic/gin
-go get -u gorm.io/gorm
-go get -u gorm.io/driver/postgres
-go get -u github.com/swaggo/swag/cmd/swag
-go get -u github.com/swaggo/gin-swagger
-go get -u github.com/swaggo/files
+# Package Installed
 
-# LIBRARY
-go get github.com/golang-jwt/jwt/v5
-go get golang.org/x/crypto/bcrypt
+```bash
+  go mod init go_project_structure
+```
 
-# SETUP FOLDER STEP
+```bash
+  go get github.com/joho/godotenv
+```
+
+```bash
+  go get -u github.com/gin-gonic/gin
+```
+
+```bash
+  go get -u gorm.io/gorm
+```
+
+```bash
+  go get -u gorm.io/driver/postgres
+```
+
+```bash
+  go get -u github.com/swaggo/swag/cmd/swag
+```
+
+```bash
+  go get -u github.com/swaggo/gin-swagger
+```
+
+```bash
+  go get -u github.com/swaggo/files
+```
+
+# Library
+
+```bash
+  go get github.com/golang-jwt/jwt/v5
+```
+
+```bash
+  go get golang.org/x/crypto/bcrypt
+```
+
+# Setup Folder Setup
 
 Config
-    - config.go
-    environment
-        - .env
+- config.go
+- environment
+    - .env
 
 database
-    - database.go
+- database.go
 
 routes
-    - routes.go (main route)
+- routes.go (main route)
 
 internal 
-    - handler
-    - models
-    - repository
-    - routes
-    - services
+- handler
+- models
+- repository
+- routes
+- services
 
-middleware
-    - auth_middleware.go for intercept request
+middleware 
+- auth_middleware.go (For intercept request)
  
 utils
