@@ -1,15 +1,16 @@
 package services
 
 import (
-	"go_project_structure/internal/models"
-	"go_project_structure/internal/repository"
+	"go_project_structure/internal/models/user"
+	"go_project_structure/internal/repository/user"
 )
 
 type UserService interface {
 	GetAllUsers() ([]models.User, error)
 	FindOneByKey(id uint) (models.User, error)
 	CreateUser(user models.User) (models.User, error)
-	DeleteUser(user models.User) error
+	DeleteUser(user models.User) (error)
+	UpdateUser(user models.User) (error)
 }
 
 type userService struct {
@@ -36,4 +37,8 @@ func (s *userService) CreateUser(user models.User) (models.User, error) {
 
 func (s *userService) DeleteUser(user models.User) error {
 	return s.userRepository.DeleteUser(user)
+}
+
+func (s *userService) UpdateUser(user models.User) error {
+	return s.userRepository.UpdateUser(user)
 }

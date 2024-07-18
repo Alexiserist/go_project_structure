@@ -2,10 +2,9 @@ package handler
 
 import (
 	// "errors"
-	"go_project_structure/internal/models"
-	"go_project_structure/internal/services"
+	"go_project_structure/internal/models/user"
+	"go_project_structure/internal/services/user"
 	"go_project_structure/utils"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -84,9 +83,14 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 		Password: createUser.Password,
 		IsActive: createUser.IsActive,
 	}
-	users, err := h.userService.CreateUser(users)
+	users, err := h.userService.CreateUser(users);
 	if err != nil {
-		utils.RespondWithStatusMessage(c, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+	switch err {
+		case utils.ErrExistingUser:
+			utils.RespondWithStatusMessage(c, http.StatusNotAcceptable,err.Error())
+		default:
+			utils.RespondWithStatusMessage(c, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		}
 		return
 	}
 	utils.ResponseWithStatusNessageData(c, http.StatusOK, http.StatusText(http.StatusOK), users)
@@ -104,11 +108,46 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := h.userService.FindOneByKey(uint(id))
-	log.Println(user)
 	if err != nil {
-		utils.RespondWithStatusMessage(c, http.StatusNotFound, http.StatusText(http.StatusNotFound))
+		utils.RespondWithStatusMessage(c, http.StatusNotFound, http.StatusText(http.StatusNotFound));
+		return
 	}
 	err = h.userService.DeleteUser(user)
+	if err != nil {
+		utils.RespondWithStatusMessage(c, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
+		return
+	}
+	utils.RespondWithStatusMessage(c, http.StatusOK, http.StatusText(http.StatusOK))
+}
+
+
+// @Summary Update Users By Key
+// @Description Update Users By Key
+// @Tags Users
+// @Accept  json
+// @Param id path int true "User ID"
+// @Param body body models.UpdateUser true "Request Body"
+// @Produce  json
+// @Success 200 {object} object{status=int,message=string}
+// @Router /users/{id} [put]
+// @Security BearerAuth
+func (h *UserHandler) UpdateUser(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"));
+	var updateUser models.UpdateUser
+	if err := c.ShouldBindBodyWithJSON(&updateUser); err != nil {
+		utils.RespondWithStatusMessage(c, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	user, err := h.userService.FindOneByKey(uint(id))
+	if err != nil {
+		utils.RespondWithStatusMessage(c, http.StatusNotFound, http.StatusText(http.StatusNotFound));
+		return
+	}
+	user.Password = updateUser.Password;
+	user.Email = updateUser.Email;
+	user.IsActive = updateUser.IsActive;
+
+	err = h.userService.UpdateUser(user)
 	if err != nil {
 		utils.RespondWithStatusMessage(c, http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return

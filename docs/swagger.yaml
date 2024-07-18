@@ -36,6 +36,17 @@ definitions:
     - password
     - username
     type: object
+  models.UpdateeUser:
+    properties:
+      email:
+        type: string
+      isActive:
+        type: boolean
+      password:
+        type: string
+    required:
+    - email
+    type: object
   models.User:
     properties:
       email:
@@ -191,6 +202,39 @@ paths:
       security:
       - BearerAuth: []
       summary: Get Users By Key
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update Users By Key
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateeUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              message:
+                type: string
+              status:
+                type: integer
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update Users By Key
       tags:
       - Users
 securityDefinitions:

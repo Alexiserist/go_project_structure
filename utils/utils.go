@@ -9,6 +9,7 @@ import (
 var (
 	ErrInvalidCredentials = errors.New("invalid username or password")
 	ErrTokenGeneration    = errors.New("error generating token")
+	ErrExistingUser		  = errors.New("username already exists")
 )
 
 type ApiStatusMessage struct {

@@ -2,9 +2,9 @@ package routes
 
 import (
 	"go_project_structure/database"
-	"go_project_structure/internal/handler"
-	"go_project_structure/internal/repository"
-	"go_project_structure/internal/services"
+	"go_project_structure/internal/handler/user"
+	"go_project_structure/internal/repository/user"
+	"go_project_structure/internal/services/user"
 	"go_project_structure/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -23,4 +23,6 @@ func UserRoute(router *gin.Engine) {
 	users.GET("/:id", userHandler.GetUserByKey)
 	users.POST("/", userHandler.CreateUser)
 	users.DELETE("/:id", userHandler.DeleteUser)
+
+	router.PUT("/users/:id",userHandler.UpdateUser)
 }

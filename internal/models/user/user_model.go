@@ -14,3 +14,9 @@ type CreateUser struct {
 	Password string `json:"password" gorm:"column:Password" binding:"required"`
 	IsActive bool `json:"isActive" gorm:"column:IsActive"`
 }
+
+type UpdateUser struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" gorm:"column:Password" `
+	IsActive bool `json:"isActive" gorm:"column:IsActive"`
+}
