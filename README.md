@@ -1,6 +1,10 @@
 # GO Project Structure
 
 # Package Installed
+```bash
+nodemon --exec go run main.go --signal SIGTERM
+```
+
 
 ```bash
   go mod init go_project_structure
