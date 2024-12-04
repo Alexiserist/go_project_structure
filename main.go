@@ -26,6 +26,7 @@ func main()  {
 	   log.Fatalf("Could not initialize the database: %v", err)
 	   return
    }
+   
    router := routes.LoadRouter();
    if err := router.Run(":8080"); err != nil {
 	   log.Fatalf("Could not start the server: %v", err)

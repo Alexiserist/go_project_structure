@@ -9,5 +9,7 @@ func AuthRoute(router *gin.Engine){
 	authService := NewAuthService(authRepository);
 	authHandler := NewAuthHandler(authService);
 	router.POST("/auth/login", authHandler.Login);
+	router.POST("/auth/refresh", authHandler.RefreshToken);
+
 
 }

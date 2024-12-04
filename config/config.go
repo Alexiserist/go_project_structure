@@ -39,6 +39,14 @@ func GetSecret() string{
     return os.Getenv("SECRET_ACCESSTOKEN")
 }
 
+func GetSecretRefresh() string{
+    err := godotenv.Load("config/environment/.env")
+    if err != nil {
+        log.Fatal("Error loading .env file")
+    }
+    return os.Getenv("SECRET_REFRESHTOKEN")
+}
+
 func GetSecretTimeJwt() int64 {
     var defaultTokenTime int64 = 30;
     err := godotenv.Load("config/environment/.env")

@@ -11,6 +11,13 @@ definitions:
         example: 200
         type: integer
     type: object
+  auth.RefreshToken:
+    properties:
+      refreshToken:
+        type: string
+    required:
+    - refreshToken
+    type: object
   auth.UserLogin:
     properties:
       password:
@@ -36,7 +43,7 @@ definitions:
     - password
     - username
     type: object
-  models.UpdateeUser:
+  models.UpdateUser:
     properties:
       email:
         type: string
@@ -91,6 +98,30 @@ paths:
           schema:
             $ref: '#/definitions/auth.AccessTokenResponse'
       summary: Authorization Login
+      tags:
+      - Auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Request Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RefreshToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.AccessTokenResponse'
+      security:
+      - BearerAuth: []
+      summary: Refresh Token
       tags:
       - Auth
   /users:
@@ -219,7 +250,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateeUser'
+          $ref: '#/definitions/models.UpdateUser'
       produces:
       - application/json
       responses:

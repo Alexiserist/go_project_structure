@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go_project_structure/config"
 	"log"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -22,11 +23,15 @@ func Init() error{
 		log.Printf("Failed to connect to Database: %v", err)
 		return err
 	}
-	// MigrateDB(db);
 	DB = db;
+
+	sqlDB, err := DB.DB();
+	if err != nil {
+		return err
+	} 
+	sqlDB.SetMaxIdleConns(10);
+	sqlDB.SetMaxOpenConns(100);
+	sqlDB.SetConnMaxLifetime(time.Minute * 5);
+
 	return nil
 }	
-
-// func MigrateDB(db *gorm.DB){
-// 	db.AutoMigrate(&models.User{});
-// }

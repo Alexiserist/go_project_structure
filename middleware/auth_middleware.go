@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"go_project_structure/auth"
-	"log"
 	"net/http"
 	"strings"
 
@@ -26,7 +25,6 @@ func NewAuthMiddleware() AuthMiddleware {
 
 func (m *authMiddleware) AuthorizationMiddleware(c *gin.Context) {
 	header := c.Request.Header.Get("Authorization");
-	log.Print(header);
 	if header == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status":  http.StatusUnauthorized,

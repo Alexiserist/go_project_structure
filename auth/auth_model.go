@@ -16,10 +16,16 @@ type User struct {
 
 type UserData struct {
 	Username 	string	`json:"username" gorm:"column:Username"`
-	AccessToken string 	`json:"accessToken" gorm:"column:Password"`
+	AccessToken string 	`json:"accessToken" gorm:"column:accessToken"`
+	RefreshToken string 	`json:"refreshToken" gorm:"column:refreshToken"`
+
 }
 
 type UserLogin struct {
 	Username string `json:"username" gorm:"column:Username" binding:"required"`
 	Password string `json:"password" gorm:"column:Password" binding:"required"`
+}
+
+type RefreshToken struct {
+	RefreshToken string `json:"refreshToken" binding:"required"`
 }

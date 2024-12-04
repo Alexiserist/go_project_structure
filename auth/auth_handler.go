@@ -49,3 +49,37 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		"data": 	token,
 	})
 }
+
+// @Summary Refresh Token
+// @Description Login
+// @Tags Auth
+// @Accept  json
+// @Param body body auth.RefreshToken true "Request Body"
+// @Produce  json
+// @Success 200 {object} auth.AccessTokenResponse
+// @Router /auth/refresh [post]
+// @Security BearerAuth
+func (h *AuthHandler) RefreshToken(c *gin.Context) {
+	var refreshToken RefreshToken;
+	if err := c.ShouldBindBodyWithJSON(&refreshToken); err != nil {
+		utils.RespondWithStatusMessage(c, http.StatusBadRequest, "Invalid request payload")
+        return
+    }
+	token, err := h.authService.ExchangeRefreshToken(refreshToken.RefreshToken);
+	if err != nil {
+		switch err {
+		case utils.ErrInvalidCredentials:
+			utils.RespondWithStatusMessage(c, http.StatusUnauthorized, err.Error())
+		case utils.ErrTokenGeneration:
+			utils.RespondWithStatusMessage(c, http.StatusInternalServerError, err.Error())
+		default:
+			utils.RespondWithStatusMessage(c, http.StatusInternalServerError, err.Error())
+		}
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status":   http.StatusOK,
+		"message":  "OK",
+		"accessToken": 	token,
+	})
+}
